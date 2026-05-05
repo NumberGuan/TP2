@@ -1,24 +1,29 @@
 import { useState, useEffect } from 'react'
+import TipCard from './components/TipCard'
+import MostVoted from './components/MostVoted'
 import './App.css'
 
-// Array de tips de productividad
-const TIPS = [
-  { id: 1, text: 'Usa la técnica Pomodoro: 25 minutos de trabajo, 5 minutos de descanso.' },
-  { id: 2, text: 'Haz la tarea más difícil primero (regla de la rana).' },
-  { id: 3, text: 'Desactiva las notificaciones mientras trabajas.' },
-  { id: 4, text: 'Planifica tu día la noche anterior.' },
-  { id: 5, text: 'Usa la regla de los 2 minutos: si algo toma menos de 2 minutos, hazlo ahora.' },
-  { id: 6, text: 'Mantén tu escritorio limpio y organizado.' },
-  { id: 7, text: 'Toma descansos cada 90 minutos para mantener la concentración.' },
-  { id: 8, text: 'Grupo tareas similares y hazlas en bloques (batching).' },
-  { id: 9, text: 'Establece límites de tiempo para cada tarea.' },
-  { id: 10, text: 'Duerme bien: el descanso es fundamental para la productividad.' },
-]
-
 function App() {
+  // Array de tips de productividad definido dentro del componente principal
+  const TIPS = [
+    { id: 1, text: 'Los 3 metodos de hashing: inserción, eliminación, validación.' },
+    { id: 2, text: 'El monje sabe por viejo y el sabio sabe por que lo hace o algo asi decia el dicho no me acuerdo' },
+    { id: 3, text: 'No se que poner en esta linea.' },
+    { id: 4, text: 'El reloj suizo, el auto aleman, la mujer paraguaya.' },
+    { id: 5, text: 'La vida sin problemas es matar el tiempo a lo bobo.' },
+    { id: 6, text: 'Una de carne, dos de choclo, dos de pollo, 1 de carne, 2 de carne, 3 de choclo.' },
+    { id: 7, text: 'Toma descansos cada 90 minutos para mantener la concentración.' },
+    { id: 8, text: 'Grupo tareas similares y hazlas en bloques (batching).' },
+    { id: 9, text: 'Establece límites de tiempo para cada tarea.' },
+    { id: 10, text: 'Duerme bien: el descanso es fundamental para la productividad.' },
+  ]
+
   // Estado para el índice del tip actual
   const [currentIndex, setCurrentIndex] = useState(0)
   
+  // Historial de los últimos tips para evitar que se repitan seguido
+  const [history, setHistory] = useState([0])
+
   // Estado para los votos (objeto con id del tip como clave)
   const [votes, setVotes] = useState(() => {
     // Cargar desde localStorage al iniciar
@@ -39,14 +44,20 @@ function App() {
     localStorage.setItem('productivityVotes', JSON.stringify(votes))
   }, [votes])
 
-  // Función para mostrar un tip aleatorio (evita repetir el mismo)
+  // Función para mostrar un tip aleatorio (evita repetir los recientes)
   const showRandomTip = () => {
     let newIndex
     do {
       newIndex = Math.floor(Math.random() * TIPS.length)
-    } while (newIndex === currentIndex && TIPS.length > 1)
+    } while (history.includes(newIndex) && TIPS.length > history.length)
     
     setCurrentIndex(newIndex)
+    setHistory(prev => {
+      const newHistory = [...prev, newIndex]
+      // Recordar los últimos 4 tips (evita que se repitan en el corto plazo)
+      if (newHistory.length > 4) newHistory.shift()
+      return newHistory
+    })
   }
 
   // Función para votar el tip actual
@@ -96,46 +107,20 @@ function App() {
       </header>
 
       <main className="main">
-        {/* Sección del tip actual */}
-        <section className="tip-card">
-          <div className="tip-badge">Tip #{currentTip.id}</div>
-          <p className="tip-text">{currentTip.text}</p>
-          
-          <div className="tip-votes">
-            <span className="vote-count">👍 {currentVotes} votos</span>
-          </div>
+        {/* Componente del tip actual */}
+        <TipCard
+          tip={currentTip}
+          votes={currentVotes}
+          onVote={voteCurrentTip}
+          onRandomTip={showRandomTip}
+        />
 
-          <div className="buttons">
-            <button onClick={showRandomTip} className="btn btn-primary">
-              🎲 Nuevo Tip
-            </button>
-            <button onClick={voteCurrentTip} className="btn btn-success">
-              ⬆️ Votar Útil
-            </button>
-          </div>
-        </section>
-
-        {/* Sección del tip más votado */}
-        <section className="most-voted-section">
-          <h2>🏆 Tip Más Valorado</h2>
-          
-          {hasAnyVotes ? (
-            <div className="tip-card most-voted">
-              <div className="tip-badge winner">¡Ganador!</div>
-              <p className="tip-text">{mostVoted.tip.text}</p>
-              <div className="tip-votes">
-                <span className="vote-count winner-votes">
-                  ⭐ {mostVoted.votes} votos
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="no-votes">
-              <p>📝 Todavía no hay votos.</p>
-              <p>¡Vota tus tips favoritos para ver cuál es el más valorado!</p>
-            </div>
-          )}
-        </section>
+        {/* Componente del tip más votado */}
+        <MostVoted
+          hasAnyVotes={hasAnyVotes}
+          mostVotedTip={mostVoted.tip}
+          maxVotes={mostVoted.votes}
+        />
 
         {/* Botón para reiniciar votos */}
         <button onClick={resetVotes} className="btn btn-danger reset-btn">
