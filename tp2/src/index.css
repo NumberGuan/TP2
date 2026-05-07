@@ -2,18 +2,22 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Outfit', system-ui, -apple-system, sans-serif;
   
-  --bg-dark: #0f172a;
-  --bg-gradient: radial-gradient(circle at top right, #312e81 0%, #0f172a 100%);
-  --text-main: #f8fafc;
-  --text-muted: #cbd5e1;
+  --bg-dark: #050505;
+  --bg-card: rgba(15, 15, 15, 0.6);
+  --text-main: #FAFAFA;
+  --text-muted: #A1A1AA;
   
-  --primary: #8b5cf6;
-  --primary-hover: #a78bfa;
-  --secondary: #ec4899;
+  --primary: #9333EA;
+  --primary-hover: #A855F7;
+  --primary-glow: rgba(147, 51, 234, 0.5);
   
-  --glass-bg: rgba(30, 41, 59, 0.4);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --secondary: #E11D48;
+  --secondary-hover: #F43F5E;
+  
+  --glass-bg: rgba(20, 20, 20, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --glass-hover-border: rgba(255, 255, 255, 0.15);
 }
 
 * {
@@ -24,49 +28,63 @@
 
 body {
   font-family: var(--font-sans);
-  background: var(--bg-dark);
-  background-image: var(--bg-gradient);
+  background-color: var(--bg-dark);
   color: var(--text-main);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  position: relative;
 }
 
-/* Background animated blobs */
+/* Elegant radial gradients in background */
 body::before,
 body::after {
   content: '';
   position: fixed;
   border-radius: 50%;
-  filter: blur(100px);
+  filter: blur(120px);
   z-index: -1;
-  opacity: 0.5;
-  animation: float 10s infinite alternate ease-in-out;
+  opacity: 0.4;
+  animation: float 20s infinite alternate ease-in-out;
+  pointer-events: none;
 }
 
 body::before {
-  width: 500px;
-  height: 500px;
-  background: rgba(139, 92, 246, 0.3);
-  top: -100px;
-  left: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.15), transparent 70%);
+  top: -200px;
+  left: -200px;
 }
 
 body::after {
-  width: 400px;
-  height: 400px;
-  background: rgba(236, 72, 153, 0.2);
-  bottom: -50px;
-  right: -50px;
-  animation-delay: -5s;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(225, 29, 72, 0.1), transparent 70%);
+  bottom: -100px;
+  right: -100px;
+  animation-delay: -10s;
 }
 
 @keyframes float {
   0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(30px, 50px) scale(1.1); }
+  50% { transform: translate(50px, 80px) scale(1.05); }
+  100% { transform: translate(-30px, 40px) scale(0.95); }
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: var(--text-main);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-hover);
 }
