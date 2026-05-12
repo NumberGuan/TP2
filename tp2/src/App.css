@@ -90,6 +90,15 @@
   opacity: 1;
 }
 
+.card-border-beam {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tip-card:hover .card-border-beam {
+  opacity: 1;
+}
+
 /* Badges */
 .tip-badge {
   align-self: flex-start;
