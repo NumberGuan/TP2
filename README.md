@@ -1,6 +1,6 @@
 # Productivity Tips App
 
-Una aplicación web moderna para descubrir y votar por consejos de productividad. Construida con React, Vite y framer-motion para animaciones fluidas y una experiencia de usuario de alta calidad.
+Una aplicación web moderna para descubrir y votar por consejos de productividad. Construida con React, Vite y framer-motion para animaciones fluidas.
 
 ## Requisitos previos
 
@@ -9,8 +9,6 @@ Antes de comenzar, asegúrate de tener instalado en tu sistema:
 - npm (normalmente se instala junto con Node.js)
 
 ## Instalación y ejecución local
-
-Sigue estos pasos para descargar y ejecutar el proyecto en tu máquina local:
 
 1. **Clonar o descargar el repositorio**
    Si usas Git, puedes clonar el repositorio:
