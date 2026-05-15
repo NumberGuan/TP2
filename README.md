@@ -1,6 +1,6 @@
 # Productivity Tips App
 
-Una aplicación web moderna para descubrir y votar por consejos de productividad. Construida con React, Vite y framer-motion para animaciones fluidas.
+Una aplicación web para descubrir y votar por consejos de productividad. Construida con React, Vite y framer-motion para animaciones fluidas.
 
 ## Requisitos previos
 
